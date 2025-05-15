@@ -15,7 +15,6 @@ $sql = "
     JOIN ecoles ec               ON ec.id    = se.ecole_id
     JOIN matieres_equipements me ON me.equipement_id = eq.id
     JOIN matieres m              ON m.id     = me.matiere_id
-   WHERE me.matiere_id = $mid
    ORDER BY ec.nom, eq.titre
 ";
 $res = $mysqli->query($sql);

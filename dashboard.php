@@ -2,7 +2,7 @@
 // dashboard.php
 session_start();
 if (!isset($_SESSION['user_id'], $_SESSION['role']) || $_SESSION['role'] !== 'financier') {
-    header('Location: login.php');
+    header('Location: login.html');
     exit;
 }
 require 'db.php';
@@ -33,7 +33,7 @@ if ($result && $row = $result->fetch_assoc()) {
         <div class="container"> 
             <nav class="navbar navbar-expand-lg">
                 <a class="navbar-brand" href="#">
-                    <img class="img-fluid rounded" loading="lazy" src="assets/img/logo-light.png" width="170" height="80" alt="BootstrapBrain Logo">
+                    <img class="img-fluid rounded" loading="lazy" src="assets/img/logo-light.png" width="500" alt="Logo">
                 </a>
                 
                 <button class="btn btn-primary btn-lg">Accueil</button>
@@ -98,9 +98,30 @@ if ($result && $row = $result->fetch_assoc()) {
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
 <script>
+    
 $(function(){
+    $(document).ready(function () {
+    let detailsTable;
+
+    // Vérifie si DataTable est déjà initialisé
+    if (!$.fn.DataTable.isDataTable('#tableau_details')) {
+        detailsTable = $('#tableau_details').DataTable({
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.13.5/i18n/fr-FR.json'
+            }
+        });
+    } else {
+        detailsTable = $('#tableau_details').DataTable();
+    }
+
+        // Chargement des données dès le lancement
+        $.getJSON('get_details.php', function(rows) {
+            detailsTable.clear().rows.add(rows).draw();
+        });
+    });
+
   // Logout
-  $('#logout').click(()=> $.post('logout.php', ()=> location='login.php'));
+  $('#logout').click(()=> $.post('logout.php', ()=> location='login.html'));
 
   // 1. Charger et afficher les summary cards
   $.getJSON('get_summary.php', function(data){
@@ -161,9 +182,9 @@ $(function(){
     });
 
     // Détails Table
-    $.getJSON('get_details.php',{ matiere_id: mid }, function(rows){
-      detailsTable.clear().rows.add(rows).draw();
-    });
+    //$.getJSON('get_details.php',{ matiere_id: mid }, function(rows){
+      //detailsTable.clear().rows.add(rows).draw();
+    //});
   });
 });
 </script>

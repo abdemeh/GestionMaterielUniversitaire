@@ -21,6 +21,18 @@ if ($result = $mysqli->query($sql)) {
 } else {
     $user_name = 'Responsable';
 }
+
+$sql = "SELECT nom FROM ecoles WHERE id = (SELECT ecole_id FROM responsables_ecole WHERE utilisateur_id=$user_id) LIMIT 1";
+if ($result = $mysqli->query($sql)) {
+    if ($row = $result->fetch_assoc()) {
+        $ecole_name = htmlspecialchars($row['nom']);
+    } else {
+        $ecole_name = 'Ecole';
+    }
+    $result->free();
+} else {
+    $ecole_name = 'Ecole';
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -37,7 +49,7 @@ if ($result = $mysqli->query($sql)) {
         <div class="container"> 
             <nav class="navbar navbar-expand-lg">
                 <a class="navbar-brand" href="#">
-                    <img class="img-fluid rounded" loading="lazy" src="assets/img/logo-light.png" width="170" height="80" alt="BootstrapBrain Logo">
+                    <img class="img-fluid rounded" loading="lazy" src="assets/img/logo-light.png" width="500" alt="Logo">
                 </a>
                 
                 <button class="btn btn-primary btn-lg">Accueil</button>
@@ -52,7 +64,7 @@ if ($result = $mysqli->query($sql)) {
                 </div>
             </div>
             <div class="col-12 text-bg-primary">
-                <h2 class="h1 mb-4">Bienvenue <?php echo $user_name; ?>.</h2>
+                <h2 class="h1 mb-4">Bienvenue <?php echo $user_name; ?> (<?php echo $ecole_name; ?>)</h2>
                 <p class="lead mb-5">Choisisser la matière, pour entrer le stock de matériel.</p>
                 <div class="card border-0 rounded-4">
                 <div class="card-body p-3 p-md-4 p-xl-5">
