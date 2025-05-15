@@ -15,7 +15,7 @@ require 'db.php';
 
 $user_id = (int)$_SESSION['user_id'];
 $equip_id = (int)$_POST['equipement_id'];
-$qte = max(0, (int)$_POST['quantite']);
+$qte = (int)$_POST['quantite'];
 
 // 1) Récupérer l'école liée au responsable
 $res = $mysqli->query("
@@ -44,7 +44,7 @@ if ($res2 && $res2->num_rows) {
     $mysqli->query("
         UPDATE stock_ecole
            SET quantite = $qte,
-               date_maj = CURDATE()
+               date_maj = NOW()
          WHERE ecole_id = $ecole_id
            AND equipement_id = $equip_id
     ");
@@ -54,7 +54,7 @@ if ($res2 && $res2->num_rows) {
         INSERT INTO stock_ecole
             (ecole_id, equipement_id, quantite, date_maj)
         VALUES
-            ($ecole_id, $equip_id, $qte, CURDATE())
+            ($ecole_id, $equip_id, $qte, NOW())
     ");
 }
 
