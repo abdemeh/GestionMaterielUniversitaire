@@ -106,12 +106,13 @@ if ($result = $mysqli->query($sql)) {
                         <div class="col-12">
                         </div>
                         <div class="col-12">
-                        <div class="d-grid">
+                        <div class="">
                             <button class="btn btn-primary btn-lg" type="submit">Enregistrer</button>
                         </div>
                         </div>
                     </div>
                     </form>
+                    <button id="downloadAll" class="btn btn-success btn-lg mt-1">Télecharger tout le stock</button>
                     <div class="row">
                     <!-- <div class="col-12">
                         <div class="d-flex gap-2 gap-md-4 flex-column flex-md-row justify-content-md-end mt-4">
@@ -130,6 +131,31 @@ if ($result = $mysqli->query($sql)) {
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+      function downloadCSV(url) {
+    fetch(url)
+      .then(resp => {
+        if (!resp.ok) throw new Error('Erreur réseau');
+        const dispo = resp.headers.get('Content-Disposition') || '';
+        let filename = 'stock.csv';
+        const m = dispo.match(/filename="([^"]+)"/);
+        if (m) filename = m[1];
+        return resp.blob().then(blob => ({blob, filename}));
+      })
+      .then(({blob, filename}) => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+      })
+      .catch(e => alert(e.message));
+  }
+
+  document.getElementById('downloadAll').addEventListener('click', () => {
+    downloadCSV('download.php?ecole_id=all');
+  });
 $(function(){
   // Logout
   $('#logout').click(function(){

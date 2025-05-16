@@ -6,7 +6,10 @@ if (!isset($_SESSION['user_id'], $_SESSION['role']) || $_SESSION['role'] !== 'fi
     exit;
 }
 require 'db.php';
-
+$res = $mysqli->query("SELECT id, nom FROM ecoles ORDER BY nom");
+if (!$res) {
+    exit('Erreur lors de la récupération des écoles');
+}
 // Récupérer le nom du financier
 $uid = (int)$_SESSION['user_id'];
 $result = $mysqli->query("SELECT nom FROM utilisateurs WHERE id = $uid LIMIT 1");
@@ -56,20 +59,39 @@ if ($result && $row = $result->fetch_assoc()) {
                 <div class="card-body p-3 p-md-4 p-xl-5 container-fluid">
                     <div id="summaryCards" class="row"></div>
                     <div class="row">
-                        <div>
-                            <div class="row mb-4">
-                                <div class="col-md-4">
-                                <label for="matiereSelect" class="form-label">Choisir Matière</label>
-                                <select id="matiereSelect" class="form-select">
-                                    <option value="">Chargement…</option>
-                                </select>
+                        <div class="col-9">
+                            <div>
+                                <div class="row mt-2">
+                                    <div class="col-md-4">
+                                    <label for="matiereSelect" class="form-label">Choisir Matière</label>
+                                    <select id="matiereSelect" class="form-select">
+                                        <option value="">Chargement…</option>
+                                    </select>
+                                    </div>
+                                </div>
+                                <div class="row mb-5">
+                                    <div class="col">
+                                        <canvas id="equipement_chart_par_matiere" height="100"></canvas>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="row mb-5">
-                                <div class="col">
-                                <canvas id="equipement_chart_par_matiere" height="100"></canvas>
+                        </div>
+                        <div class="col-3">
+                            
+                            <div class="row mt-2">
+                                    <div class="col">
+                                    <label for="ecoleSelect" class="form-label">Choisir école</label>
+                                    <select class="form-select" name="ecole_id" id="ecole_id">
+                                        <?php while ($row = $res->fetch_assoc()): ?>
+                                            <option value="<?= htmlspecialchars($row['id']) ?>">
+                                            <?= htmlspecialchars($row['nom']) ?>
+                                            </option>
+                                        <?php endwhile; ?>
+                                    </select>
+                                    </div>
+                                    <button id="downloadOne" class="btn btn-danger btn-lg mt-2">Télecharger rapport école</button>
+                                    <button id="downloadAll" class="btn btn-success btn-lg mt-1">Télecharger tout le stock</button>
                                 </div>
-                            </div>
                         </div>
                     </div>
                     <div class="row">
@@ -98,7 +120,37 @@ if ($result && $row = $result->fetch_assoc()) {
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
 <script>
-    
+function downloadCSV(url) {
+    fetch(url)
+      .then(resp => {
+        if (!resp.ok) throw new Error('Erreur réseau');
+        const dispo = resp.headers.get('Content-Disposition') || '';
+        let filename = 'stock.csv';
+        const m = dispo.match(/filename="([^"]+)"/);
+        if (m) filename = m[1];
+        return resp.blob().then(blob => ({blob, filename}));
+      })
+      .then(({blob, filename}) => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+      })
+      .catch(e => alert(e.message));
+  }
+
+  document.getElementById('downloadOne').addEventListener('click', e => {
+    e.preventDefault();
+    const id = document.getElementById('ecole_id').value;
+    downloadCSV('download.php?ecole_id=' + encodeURIComponent(id));
+  });
+
+  document.getElementById('downloadAll').addEventListener('click', () => {
+    downloadCSV('download.php?ecole_id=all');
+  });    
 $(function(){
     $(document).ready(function () {
     let detailsTable;
