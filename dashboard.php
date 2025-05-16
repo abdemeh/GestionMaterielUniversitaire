@@ -28,7 +28,8 @@ if ($result && $row = $result->fetch_assoc()) {
     <link rel="stylesheet" href="style.css">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css" rel="stylesheet">
-    <title>Document</title>
+    <link rel="icon" type="image/x-icon" href="assets/img/favicon.png">
+    <title>Tableau de bord - Financier</title>
 </head>
 <body>
    <!-- Login 9 - Bootstrap Brain Component -->
@@ -100,11 +101,12 @@ if ($result && $row = $result->fetch_assoc()) {
                                 <table id="tableau_details" class="display table table-striped" style="width:100%">
                                     <thead>
                                     <tr>
-                                        <th>École</th>
-                                        <th>Matière</th>
-                                        <th>Équipement</th>
-                                        <th>Quantité</th>
-                                        <th>Date MAJ</th>
+                                        <th style="width:15%">École</th>
+                                        <th style="width:10%">Matière</th>
+                                        <th style="width:15%">Équipement</th>
+                                        <th style="width:45%">Description</th>
+                                        <th style="width:5%">Quantité</th>
+                                        <th style="width:10%">Date MAJ</th>
                                     </tr>
                                     </thead>
                                     <tbody></tbody>
@@ -216,6 +218,7 @@ $(function(){
       { data: 'ecole' },
       { data: 'matiere' },
       { data: 'equipement' },
+      { data: 'description' },
       { data: 'quantite' },
       { data: 'date_maj' }
     ]
