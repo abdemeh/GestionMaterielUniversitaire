@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1:3306
--- Generation Time: May 16, 2025 at 10:03 PM
--- Server version: 8.0.32
--- PHP Version: 8.2.18
+-- Host: localhost
+-- Generation Time: May 24, 2025 at 02:16 AM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -27,22 +27,20 @@ SET time_zone = "+00:00";
 -- Table structure for table `ecoles`
 --
 
-DROP TABLE IF EXISTS `ecoles`;
-CREATE TABLE IF NOT EXISTS `ecoles` (
-  `id` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `ecoles` (
+  `id` int(11) NOT NULL,
   `nom` varchar(100) DEFAULT NULL,
-  `adresse` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `adresse` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `ecoles`
 --
 
 INSERT INTO `ecoles` (`id`, `nom`, `adresse`) VALUES
-(1, 'École Primaire Péguy', '12 rue des Écoles, Casablanca'),
-(2, 'École Primaire Akenssouss', 'Rue Tassaout, Casablanca'),
-(3, 'Lycée International de Rabat', 'Boulevard Sidi Abderrahmane, Rabat');
+(1, 'École Primaire Reja Fe Lah', 'Guelmim 81000'),
+(2, 'École Primaire Ennachia', 'Guelmim 81000'),
+(3, 'Lycée Mohamed V', 'Guelmim 81000');
 
 -- --------------------------------------------------------
 
@@ -50,15 +48,11 @@ INSERT INTO `ecoles` (`id`, `nom`, `adresse`) VALUES
 -- Table structure for table `ecoles_matieres`
 --
 
-DROP TABLE IF EXISTS `ecoles_matieres`;
-CREATE TABLE IF NOT EXISTS `ecoles_matieres` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `ecole_id` int DEFAULT NULL,
-  `matiere_id` int DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `ecole_id` (`ecole_id`),
-  KEY `matiere_id` (`matiere_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE `ecoles_matieres` (
+  `id` int(11) NOT NULL,
+  `ecole_id` int(11) DEFAULT NULL,
+  `matiere_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `ecoles_matieres`
@@ -75,13 +69,11 @@ INSERT INTO `ecoles_matieres` (`id`, `ecole_id`, `matiere_id`) VALUES
 -- Table structure for table `equipements`
 --
 
-DROP TABLE IF EXISTS `equipements`;
-CREATE TABLE IF NOT EXISTS `equipements` (
-  `id` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `equipements` (
+  `id` int(11) NOT NULL,
   `titre` varchar(100) DEFAULT NULL,
-  `description` text,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `description` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `equipements`
@@ -111,19 +103,17 @@ INSERT INTO `equipements` (`id`, `titre`, `description`) VALUES
 -- Table structure for table `matieres`
 --
 
-DROP TABLE IF EXISTS `matieres`;
-CREATE TABLE IF NOT EXISTS `matieres` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `nom` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE `matieres` (
+  `id` int(11) NOT NULL,
+  `nom` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `matieres`
 --
 
 INSERT INTO `matieres` (`id`, `nom`) VALUES
-(1, 'Études sociales'),
+(1, 'Histoire et Géographie'),
 (2, 'Histoire et Géographie');
 
 -- --------------------------------------------------------
@@ -132,15 +122,11 @@ INSERT INTO `matieres` (`id`, `nom`) VALUES
 -- Table structure for table `matieres_equipements`
 --
 
-DROP TABLE IF EXISTS `matieres_equipements`;
-CREATE TABLE IF NOT EXISTS `matieres_equipements` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `matiere_id` int DEFAULT NULL,
-  `equipement_id` int DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `matiere_id` (`matiere_id`),
-  KEY `equipement_id` (`equipement_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE `matieres_equipements` (
+  `id` int(11) NOT NULL,
+  `matiere_id` int(11) DEFAULT NULL,
+  `equipement_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `matieres_equipements`
@@ -170,12 +156,9 @@ INSERT INTO `matieres_equipements` (`id`, `matiere_id`, `equipement_id`) VALUES
 -- Table structure for table `responsables_ecole`
 --
 
-DROP TABLE IF EXISTS `responsables_ecole`;
-CREATE TABLE IF NOT EXISTS `responsables_ecole` (
-  `utilisateur_id` int NOT NULL,
-  `ecole_id` int NOT NULL,
-  PRIMARY KEY (`utilisateur_id`),
-  KEY `ecole_id` (`ecole_id`)
+CREATE TABLE `responsables_ecole` (
+  `utilisateur_id` int(11) NOT NULL,
+  `ecole_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -193,38 +176,35 @@ INSERT INTO `responsables_ecole` (`utilisateur_id`, `ecole_id`) VALUES
 -- Table structure for table `stock_ecole`
 --
 
-DROP TABLE IF EXISTS `stock_ecole`;
-CREATE TABLE IF NOT EXISTS `stock_ecole` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `ecole_id` int DEFAULT NULL,
-  `equipement_id` int DEFAULT NULL,
-  `quantite` int DEFAULT NULL,
-  `date_maj` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `ecole_id` (`ecole_id`),
-  KEY `equipement_id` (`equipement_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE `stock_ecole` (
+  `id` int(11) NOT NULL,
+  `ecole_id` int(11) DEFAULT NULL,
+  `equipement_id` int(11) DEFAULT NULL,
+  `quantite` int(11) DEFAULT NULL,
+  `etat` varchar(50) DEFAULT NULL,
+  `date_maj` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `stock_ecole`
 --
 
-INSERT INTO `stock_ecole` (`id`, `ecole_id`, `equipement_id`, `quantite`, `date_maj`) VALUES
-(1, 1, 1, -3, '2025-05-15 01:52:30'),
-(2, 1, 2, 8, '2025-05-16 22:12:52'),
-(3, 1, 13, 1, '2025-05-01 00:00:00'),
-(4, 2, 1, 2, '2025-05-02 00:00:00'),
-(5, 2, 4, 4, '2025-05-02 00:00:00'),
-(6, 2, 5, 6, '2025-05-02 00:00:00'),
-(7, 1, 3, 4, '2025-05-15 18:22:50'),
-(8, 3, 14, 5, '2025-05-15 18:20:38'),
-(9, 3, 15, 3, '2025-05-15 18:20:38'),
-(10, 3, 16, 4, '2025-05-15 18:20:38'),
-(11, 1, 12, 4, '2025-05-15 18:22:56'),
-(12, 1, 9, -4, '2025-05-15 18:23:03'),
-(13, 2, 9, 300, '2025-05-15 22:25:15'),
-(14, 2, 2, -6, '2025-05-15 22:35:37'),
-(15, 1, 8, 4, '2025-05-16 21:53:03');
+INSERT INTO `stock_ecole` (`id`, `ecole_id`, `equipement_id`, `quantite`, `etat`, `date_maj`) VALUES
+(1, 1, 1, -3, 'Bon', '2025-05-15 01:52:30'),
+(2, 1, 2, 8, 'Bon', '2025-05-16 22:12:52'),
+(3, 1, 13, 1, 'Bon', '2025-05-01 00:00:00'),
+(4, 2, 1, 2, 'Bon', '2025-05-02 00:00:00'),
+(5, 2, 4, 4, 'Bon', '2025-05-02 00:00:00'),
+(6, 2, 5, 6, 'Bon', '2025-05-02 00:00:00'),
+(7, 1, 3, 4, 'Bon', '2025-05-15 18:22:50'),
+(8, 3, 14, 5, 'Bon', '2025-05-15 18:20:38'),
+(9, 3, 15, 3, 'Bon', '2025-05-17 14:28:58'),
+(10, 3, 16, 4, 'À réparer', '2025-05-17 15:40:03'),
+(11, 1, 12, 4, 'Bon', '2025-05-15 18:22:56'),
+(12, 1, 9, -4, 'Bon', '2025-05-15 18:23:03'),
+(13, 2, 9, 300, 'Bon', '2025-05-15 22:25:15'),
+(14, 2, 2, -7, 'Usé', '2025-05-17 23:59:07'),
+(15, 1, 8, 4, 'Bon', '2025-05-16 21:53:03');
 
 -- --------------------------------------------------------
 
@@ -232,16 +212,13 @@ INSERT INTO `stock_ecole` (`id`, `ecole_id`, `equipement_id`, `quantite`, `date_
 -- Table structure for table `utilisateurs`
 --
 
-DROP TABLE IF EXISTS `utilisateurs`;
-CREATE TABLE IF NOT EXISTS `utilisateurs` (
-  `id` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `utilisateurs` (
+  `id` int(11) NOT NULL,
   `nom` varchar(100) DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL,
   `mot_de_passe` varchar(255) DEFAULT NULL,
-  `role` enum('financier','responsable') NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `role` enum('financier','responsable') NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `utilisateurs`
@@ -252,6 +229,112 @@ INSERT INTO `utilisateurs` (`id`, `nom`, `email`, `mot_de_passe`, `role`) VALUES
 (2, 'Mohamed', 'med.respo@example.com', '1234', 'responsable'),
 (3, 'Khaled', 'khaled.respo@example.com', '1234', 'responsable'),
 (4, 'Karim', 'karim.resp@lycee-rabat.ma', '1234', 'responsable');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `ecoles`
+--
+ALTER TABLE `ecoles`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `ecoles_matieres`
+--
+ALTER TABLE `ecoles_matieres`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `ecole_id` (`ecole_id`),
+  ADD KEY `matiere_id` (`matiere_id`);
+
+--
+-- Indexes for table `equipements`
+--
+ALTER TABLE `equipements`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `matieres`
+--
+ALTER TABLE `matieres`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `matieres_equipements`
+--
+ALTER TABLE `matieres_equipements`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `matiere_id` (`matiere_id`),
+  ADD KEY `equipement_id` (`equipement_id`);
+
+--
+-- Indexes for table `responsables_ecole`
+--
+ALTER TABLE `responsables_ecole`
+  ADD PRIMARY KEY (`utilisateur_id`),
+  ADD KEY `ecole_id` (`ecole_id`);
+
+--
+-- Indexes for table `stock_ecole`
+--
+ALTER TABLE `stock_ecole`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `ecole_id` (`ecole_id`),
+  ADD KEY `equipement_id` (`equipement_id`);
+
+--
+-- Indexes for table `utilisateurs`
+--
+ALTER TABLE `utilisateurs`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `email` (`email`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `ecoles`
+--
+ALTER TABLE `ecoles`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `ecoles_matieres`
+--
+ALTER TABLE `ecoles_matieres`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `equipements`
+--
+ALTER TABLE `equipements`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
+-- AUTO_INCREMENT for table `matieres`
+--
+ALTER TABLE `matieres`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `matieres_equipements`
+--
+ALTER TABLE `matieres_equipements`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
+-- AUTO_INCREMENT for table `stock_ecole`
+--
+ALTER TABLE `stock_ecole`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
+-- AUTO_INCREMENT for table `utilisateurs`
+--
+ALTER TABLE `utilisateurs`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Constraints for dumped tables
