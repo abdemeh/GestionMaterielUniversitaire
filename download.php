@@ -95,7 +95,7 @@ $out = openCsv("stock_ecole_{$id}.csv");
 fwrite($out, "Responsable: {$info['responsable']}\n");
 
 // Entêtes avec 'description'
-fputcsv($out, ['ecole', 'matiere', 'equipement', 'description', 'quantité', 'date MAJ'], ';');
+fputcsv($out, ['ecole', 'matiere', 'equipement', 'description', 'quantité', 'état', 'date MAJ'], ';');
 
 $stmt = $mysqli->prepare("
   SELECT 
@@ -104,6 +104,7 @@ $stmt = $mysqli->prepare("
     eq.titre     AS equipement,
     eq.description,
     se.quantite,
+    se.etat,
     se.date_maj
   FROM stock_ecole se
   JOIN ecoles e              ON se.ecole_id = e.id
@@ -124,6 +125,7 @@ while ($r = $res->fetch_assoc()) {
         $r['equipement'],
         $r['description'],
         $r['quantite'],
+        $r['etat'],
         $r['date_maj']
     ], ';');
 }

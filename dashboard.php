@@ -104,8 +104,9 @@ if ($result && $row = $result->fetch_assoc()) {
                                         <th style="width:15%">École</th>
                                         <th style="width:10%">Matière</th>
                                         <th style="width:15%">Équipement</th>
-                                        <th style="width:45%">Description</th>
+                                        <th style="width:40%">Description</th>
                                         <th style="width:5%">Quantité</th>
+                                        <th style="width:5%">État</th>
                                         <th style="width:10%">Date MAJ</th>
                                     </tr>
                                     </thead>
@@ -220,6 +221,7 @@ $(function(){
       { data: 'equipement' },
       { data: 'description' },
       { data: 'quantite' },
+      { data: 'etat' },
       { data: 'date_maj' }
     ]
   });

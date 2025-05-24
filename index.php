@@ -98,9 +98,19 @@ if ($result = $mysqli->query($sql)) {
                                 
                             </small></em></p>
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-8">
                             <label for="stock" class="form-label">Quantité</label>
                             <input type="number" id="stock" class="form-control" required disabled />
+                        </div>
+                        <div class="col-md-4">
+                            <label for="etat" class="form-label">État :</label>
+                            <select name="etat" id="etat" class="form-select" required>
+                              <option value="" hidden>--Choisir l'état--</option>
+                              <option value="Neuf">Neuf</option>
+                              <option value="Bon">Bon</option>
+                              <option value="Usé">Usé</option>
+                              <option value="À réparer">À réparer</option>
+                            </select>
                         </div>
                         <div class="col-12">
                         </div>
@@ -192,51 +202,79 @@ $(function(){
     });
   });
 
-  // Quand équipement change → détail + stock courant
+// Quand équipement change → détail + stock courant + état
 $('#equipement').change(function(){
   let eid = this.value;
   if(!eid){
     $('#stock').prop('disabled', true);
+    $('#etat').prop('disabled', true); // Ajout
     $('#stockForm button').prop('disabled', true);
-    $('#materiel_description').html('');  // vider la description
+    $('#materiel_description').html('');
     return;
   }
 
   $.getJSON('get_detail.php', { equipement_id: eid }, function(data){
-    // mettre à jour le stock
     $('#stock')
       .val(data.quantite)
       .prop('disabled', false);
 
-    // injecter la description dans le <p> 
+    // Ajout de la récupération de l'état
+    $('#etat')
+      .val(data.etat || '') // Met à jour la valeur du select
+      .prop('disabled', false);
+
     $('#materiel_description')
       .html('<em><small>' + data.description + '</small></em>');
 
-    // activer le bouton Enregistrer
     $('#stockForm button').prop('disabled', false);
   });
 });
 
 
-    // Soumettre la quantité
-    $('#stockForm').submit(function(e){
+
+// Soumettre la quantité avec l'état
+$('#stockForm').submit(function(e){
     e.preventDefault();
     const payload = {
         equipement_id: $('#equipement').val(),
-        quantite:     $('#stock').val()
+        quantite: $('#stock').val(),
+        etat: $('#etat').val() // <-- AJOUTER L'ÉTAT
     };
 
     $.post('update_stock.php', payload, function(resp){
         let msg = $('#message')
-        .removeClass('d-none alert-success alert-danger');
+            .removeClass('d-none alert-success alert-danger');
 
         if(resp.status === 'ok'){
-        msg.html('<div class="alert alert-success" role="alert">Stock mis à jour!</div>');
+            msg.html('<div class="alert alert-success" role="alert">Stock mis à jour!</div>');
         } else {
-        msg.html('<div class="alert alert-danger" role="alert">Erreur : '+resp.error+'</div>');
+            msg.html('<div class="alert alert-danger" role="alert">Erreur : '+resp.error+'</div>');
         }
     }, 'json');
+});
+
+// Désactive/active le select état selon la sélection matière+équipement
+function toggleEtat() {
+    // Le select état est activé uniquement si un matériel est choisi (et non vide)
+    const equipementSelected = $('#equipement').val() !== '' && !$('#equipement').prop('disabled');
+    $('#etat').prop('disabled', !equipementSelected);
+}
+
+// Initialiser au chargement
+$(function(){
+    toggleEtat();
+
+    // Quand la liste des équipements change (après choix matière)
+    $('#equipement').on('change', function() {
+        toggleEtat();
     });
+
+    // Quand la matière change, réinitialiser aussi l'état
+    $('#matiere').on('change', function() {
+        toggleEtat();
+        $('#etat').val(''); // Optionnel : réinitialise le choix état
+    });
+});
 
 });
 </script>

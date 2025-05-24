@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `ecoles` (
   `nom` varchar(100) DEFAULT NULL,
   `adresse` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `ecoles`
@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS `ecoles_matieres` (
   PRIMARY KEY (`id`),
   KEY `ecole_id` (`ecole_id`),
   KEY `matiere_id` (`matiere_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `ecoles_matieres`
@@ -81,7 +81,7 @@ CREATE TABLE IF NOT EXISTS `equipements` (
   `titre` varchar(100) DEFAULT NULL,
   `description` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `equipements`
@@ -116,7 +116,7 @@ CREATE TABLE IF NOT EXISTS `matieres` (
   `id` int NOT NULL AUTO_INCREMENT,
   `nom` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `matieres`
@@ -140,7 +140,7 @@ CREATE TABLE IF NOT EXISTS `matieres_equipements` (
   PRIMARY KEY (`id`),
   KEY `matiere_id` (`matiere_id`),
   KEY `equipement_id` (`equipement_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `matieres_equipements`
@@ -176,7 +176,7 @@ CREATE TABLE IF NOT EXISTS `responsables_ecole` (
   `ecole_id` int NOT NULL,
   PRIMARY KEY (`utilisateur_id`),
   KEY `ecole_id` (`ecole_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `responsables_ecole`
@@ -203,7 +203,7 @@ CREATE TABLE IF NOT EXISTS `stock_ecole` (
   PRIMARY KEY (`id`),
   KEY `ecole_id` (`ecole_id`),
   KEY `equipement_id` (`equipement_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `stock_ecole`
@@ -241,7 +241,7 @@ CREATE TABLE IF NOT EXISTS `utilisateurs` (
   `role` enum('financier','responsable') NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `utilisateurs`

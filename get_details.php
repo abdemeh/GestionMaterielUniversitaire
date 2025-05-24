@@ -11,12 +11,13 @@ SELECT
     eq.titre     AS equipement,
     eq.description AS description,
     se.quantite,
+    se.etat AS etat,
     se.date_maj
-  FROM stock_ecole se
-  JOIN equipements eq           ON eq.id    = se.equipement_id
-  JOIN ecoles ec               ON ec.id    = se.ecole_id
-  JOIN matieres_equipements me ON me.equipement_id = eq.id
-  JOIN matieres m              ON m.id     = me.matiere_id
+FROM stock_ecole se
+JOIN equipements eq           ON eq.id    = se.equipement_id
+JOIN ecoles ec               ON ec.id    = se.ecole_id
+JOIN matieres_equipements me ON me.equipement_id = eq.id
+JOIN matieres m              ON m.id     = me.matiere_id
 ";
 $res = $mysqli->query($sql);
 $out = [];
